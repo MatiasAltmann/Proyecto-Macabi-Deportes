@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-3">
+  <div class="container mt-3 mb-5">
     <div class="text text-center pb-3 pt-5 h1">Detalles de la Fecha</div>
 
     <div>
@@ -36,14 +36,17 @@
         </div>
       </div>
     </div>
-    <div class="d-flex justify-content-center align-items-center">
+    <div class="d-flex justify-content-center align-items-center mt-5">
       <button class="btn btn-secondary">
         <router-link to="/" class="nav-item nav-link" href="#"
-          >Volver a Inicio</router-link
-        >
+          >Volver a Inicio</router-link  >
       </button>
-      <router-link class="btn btn-primary m-3" :to="`/editarfecha/${fechaDetalle.idFecha}`">Editar Fecha</router-link>
       <button  class="btn btn-dark" @click="asignarAsistencia">Asignar/Modificar asistencias</button>
+
+    </div>
+    <div class="d-flex justify-content-center align-items-center mt-5">
+
+    <router-link class="btn btn-primary m-3" :to="`/editarfecha/${fechaDetalle.idFecha}`">Editar Fecha</router-link>
       <button @click="eliminarFecha" class="btn btn-danger m-3">Eliminar fecha</button>
     </div>
   </div>
@@ -151,15 +154,34 @@ export default {
         return "Sin asignar";
       }
     }
-    function eliminarFecha() {
+    //function eliminarFecha() {
 
+   //   let idCategoria = fechaDetalle.value.idCategoria;
+   //   //fechaStore.deleteElement(apiUrl,"fecha/" + idFecha + "/eliminarFecha")
+   //   if(confirm("¿Estas seguro que queres borras definitivamente la fecha con todas sus asistencias existentes?")) {
+    //   fechaStore.deleteElement(apiUrl,"fecha/" + idFecha + "/eliminarFecha")
+        
+    //    router.push({ path: `/fechasCategoria/${idCategoria}` })
+   //     alert("Borrado con éxito")
+ //     }else
+  //    alert('Se canceló la operación');
 
-      fechaStore.deleteElement(apiUrl,"fecha/" + idFecha + "/eliminarFecha")
-      router.go(-1)
+  //  }
 
-
-      
-    }
+    const eliminarFecha = async () => {
+       let idCategoria = fechaDetalle.value.idCategoria;
+       if(confirm("¿Estas seguro que queres borras definitivamente la fecha con todas sus asistencias existentes?")) {
+            try {
+                await fechaStore.deleteElement(apiUrl,"fecha/" + idFecha + "/eliminarFecha");
+                alert("Borrado con éxito");
+                router.push({ path: `/fechasCategoria/${idCategoria}` })
+            } catch (error) {
+                console.error("Error al eliminar fecha:", error);
+            }
+       }else{
+        alert('Se canceló la operación');
+       }
+        };
 
       function asignarAsistencia() {
 

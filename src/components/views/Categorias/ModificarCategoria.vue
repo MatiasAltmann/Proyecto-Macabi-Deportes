@@ -52,6 +52,10 @@
                             </div>
                             <div class="d-flex justify-content-center">
                                 <button class="btn btn-danger" @click="confirmarEliminarCategoria">Borrar Categoría</button>
+
+                            </div>
+                            <div class="d-flex justify-content-center mt-3">
+                                <button class="btn btn-dark" @click="eliminarSocio">Eliminar socios de la categoria</button>
                             </div>
                         </div>
                     </div>
@@ -135,8 +139,10 @@ export default {
         onMounted(async () => {
             await categoriasStore.fetchElementById(`${apiUrl}/categoria/`, idCategoria)
             await deporteStore.fetchElements(`${apiUrl}/deporte/getAll`)
+            usuariosStore.elements = null ;
+            usuariosStore.elementsList = null;
             await usuariosStore.fetchElements(`${apiUrl}/categoria/${idCategoria}/getProfesores`)
-            await profesoresStore.fetchElements(`${apiUrl}/usuario/3/rol`)
+            await profesoresStore.fetchElements(`${apiUrl}/usuario/3/rol/activos`)
             data.value;
         })
 
@@ -184,26 +190,27 @@ export default {
         }
 
         const deleteCategoria = async () => {
-      try {
-        await categoriasStore.deleteElement(
-          apiUrl,
-          "categoria/" + idCategoria + "/eliminarCategoria"
-        );
-        alert("Categoría eliminada con éxito");
-        router.push("/deportes");
-      } catch (error) {
-        console.error("Error al eliminar el deporte:", error);
-      }
-    };
 
-    const confirmarEliminarCategoria = () => {
-      const mensaje = `¿Estás seguro de eliminar esta categoria: "${nombre.value}"?`;
-      if (window.confirm(mensaje)) {
-        deleteCategoria();
-      } else {
-        console.log("Operación de eliminación cancelada.");
-      }
-    };
+            try {
+                await categoriasStore.deleteElement(
+                    apiUrl,
+                    "categoria/" + idCategoria + "/eliminarCategoria"
+                );
+                alert("Categoría eliminada con éxito");
+                router.push("/deportes");
+            } catch (error) {
+                console.error("Error al eliminar el deporte:", error);
+            }
+        };
+
+        const confirmarEliminarCategoria = () => {
+            const mensaje = `¿Estás seguro de eliminar esta categoria: "${nombre.value}"?`;
+            if (window.confirm(mensaje)) {
+                deleteCategoria();
+            } else {
+                console.log("Operación de eliminación cancelada.");
+            }
+        };
 
         function volverAtras() {
             router.go(-1);
@@ -282,7 +289,9 @@ export default {
             return false
         }
 
-        
+        function eliminarSocio(){
+            router.push({ path: `/eliminarSociosCategoria/${idCategoria}` })
+        }
 
         return {
             categoriasStore,
@@ -300,6 +309,7 @@ export default {
             profesoresModal,
             saveSelectedProfesores,
             isChecked,
+            eliminarSocio,
             confirmarEliminarCategoria,
             deleteCategoria
         }

@@ -1,11 +1,11 @@
 <template>
-    <div class="container_grid tamaño_m">
+    <div class="container_grid macabi_color_fondo tamaño_m">
 
-        <div class="container_title">
+        <div class="sub_container_title lightgrey_color_fondo">
             Registrar Socio
         </div>
 
-        <div class="container_basic">
+        <div class="sub_container_basic lightgrey_color_fondo">
 
             <div class="form-floating mb-3">
 
@@ -99,11 +99,14 @@
             </div>
 
             <div class="form-floating mb-3">
-                <input type="text" id="ObservInput" class="form-control" :class="this.isInvalid" placeholder=""
+                <input type="text" id="ObservInput" class="form-control" :class="this.classInvalid[8]" placeholder=""
                     v-model="this.observaciones">
                 <label for="ObservInput">Observaciones</label>
+                <div class="invalid-feedback" v-for="error in this.errorsMatrix[8]">
+                    {{ error }}
+                </div>
             </div>
-            
+
             <div class="d-flex justify-content-center align-items-center">
                 <button type="submit" class="btn btn-macabi1" @click="validarCampos">Registar Socio</button>
             </div>
@@ -136,8 +139,8 @@ export default {
             fechaNacimiento: '',
             observaciones: '',
 
-            classInvalid: ['', '', '', '', '', '', '', ''],
-            errorsMatrix: [[], [], [], [], [], [], [], []],
+            classInvalid: ['', '', '', '', '', '', '', '', ''],
+            errorsMatrix: [[], [], [], [], [], [], [], [], []],
 
 
             errorMsj: '',
@@ -196,9 +199,9 @@ export default {
 
         async registrarSocio() {
 
-            this.classInvalid = ['', '', '', '', '', '', '', '']
+            this.classInvalid = ['', '', '', '', '', '', '', '', '']
 
-            this.errorsMatrix = [[], [], [], [], [], [], [], []]
+            this.errorsMatrix = [[], [], [], [], [], [], [], [], []]
 
             try {
                 const data = {
@@ -253,7 +256,9 @@ export default {
         showErrors(erroresArray) {
             erroresArray.forEach(error => {
                 const numero = parseInt(error.substring(0, 1));
+                console.log("numero", numero)
                 const mensaje = error.substring(1);
+                console.log(mensaje)
 
 
                 if (/^[0-9]+(\.[0-9]+)?$/.test(numero)) {
