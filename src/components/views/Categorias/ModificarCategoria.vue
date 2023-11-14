@@ -52,6 +52,7 @@
                             </div>
                             <div class="d-flex justify-content-center">
                                 <button class="btn btn-danger" @click="confirmarEliminarCategoria">Borrar Categoría</button>
+
                             </div>
                             <div class="d-flex justify-content-center mt-3">
                                 <button class="btn btn-dark" @click="eliminarSocio">Eliminar socios de la categoria</button>
@@ -189,6 +190,7 @@ export default {
         }
 
         const deleteCategoria = async () => {
+
             try {
                 await categoriasStore.deleteElement(
                     apiUrl,
